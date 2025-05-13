@@ -116,6 +116,20 @@ function Island({
             const normalization = (rotation % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
             switch (true) {
                 case normalization >= 5.45 && normalization <= 5.85:
+                    setCurrentStage(1);
+                    break;
+                case normalization >= 0.85 && normalization <= 1.3:
+                    setCurrentStage(3);
+                    break;
+                case normalization >= 2.4 && normalization <= 2.6:
+                    setCurrentStage(2);
+                    break;
+                case normalization >= 4.25 && normalization <= 4.75:
+                    setCurrentStage(1);
+                    break;
+                default:
+                    setCurrentStage(null);
+                    break;
             }
         }
     });
