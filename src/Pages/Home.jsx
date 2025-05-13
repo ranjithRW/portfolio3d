@@ -11,7 +11,7 @@ const Home = () => {
   const [isRotating, setIsRotating] = useState(false);
   const [currentStage, setCurrentStage] = useState(1);
 
-//plane  screen size adjustment
+  //plane  screen size adjustment
   const adjustPlaneScreenSize = () => {
     let screenScale, screenPosition;
 
@@ -26,7 +26,7 @@ const Home = () => {
     return [screenScale, screenPosition];
   }
 
-//island screen size adjustment
+  //island screen size adjustment
   const adjustIslandForScreenSize = () => {
     let screenScale, screenPosition;
 
@@ -48,11 +48,13 @@ const Home = () => {
 
   return (
     <div className='w-full h-screen relative'>
+      {/* The Canvas component is the main container for the 3D scene. It uses the WebGL renderer to display the 3D content. */}
       <Canvas className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}`}
         camera={{
           near: 0.1,
           far: 1000,
         }}>
+        {/* Suspense is used to handle loading states for 3D models. It shows the Loader component while the models are loading. */}
         <Suspense fallback={<Loader />}>
           <directionalLight position={[1, 1, 1]} intensity={2} />
           <ambientLight intensity={0.5} />
