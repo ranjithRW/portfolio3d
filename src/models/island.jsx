@@ -7,10 +7,12 @@ Title: Fox's islands
 */
 
 import React, { use, useEffect, useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF } from '@react-three/drei' //render the model
 import { useFrame, useThree } from '@react-three/fiber'
-import { a } from '@react-spring/three';
-import islandScence from '../assets/3d/island.glb'
+//useFrame gives access to the render loop for frame-based updates.
+//useThree provides access to the renderer, camera, and viewport.
+import { a } from '@react-spring/three';//a is used for animating 3D elements with react-spring.
+import islandScence from '../assets/3d/island.glb'//model
 
 function Island({
     isRotating,
@@ -18,16 +20,15 @@ function Island({
     setCurrentStage,
     ...props
 }) {
-    const islandRef = useRef();
-    const { gl, viewport } = useThree();
+    const islandRef = useRef();//islandRef is a reference to the 3D island group.
+    const { gl, viewport } = useThree();//viewport is used to normalize drag speed across screen sizes.
+    const { nodes, materials } = useGLTF(islandScence); //useGLTF loads the island model and extracts its geometry (nodes) and materials.
 
-    const { nodes, materials } = useGLTF(islandScence);
+    const lastX = useRef(0);//lastX stores the last X position of mouse/touch during drag.
+    const rotationspeed = useRef(0);//rotationspeed keeps track of how fast the island is spinning.
+    const dampingFactor = 0.95;//dampingFactor slows down rotation over time for a smoother feel.
 
-    const lastX = useRef(0);
-    const rotationspeed = useRef(0);
-    const dampingFactor = 0.95;
-
-
+    //Activates rotation and records the initial position.
     const handlePointerDown = (event) => {
         event.stopPropagation();
         event.preventDefault();
@@ -38,6 +39,7 @@ function Island({
 
     }
 
+    //Ends rotation tracking.
     const handlePointerUp = (event) => {
         event.stopPropagation();
         event.preventDefault();
@@ -45,6 +47,8 @@ function Island({
     }
 
 
+    //Updates the island’s Y-axis rotation while dragging.
+    //Adjusts speed depending on drag delta and screen size.
     const handlePointerMove = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -59,6 +63,7 @@ function Island({
     }
 
 
+    //Sets initial rotation speed.
     const handleKeyDown = (event) => {
         if (event.key === 'ArrowLeft') {
             if (event.key === 'ArrowLeft')
@@ -76,7 +81,7 @@ function Island({
     }
 
 
-
+    //Ends rotation when the key is released.
     const handleKeyUp = (event) => {
         if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
             setIsRotating(false);
